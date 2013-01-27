@@ -34,23 +34,30 @@ class Test(unittest.TestCase):
         self.methodname = 'test_get_station_by_coordinates()'
         
         self.assertIsNotNone(station_list, '%s - station list must not be null' % (self.methodname))
-        self.assertTrue(self.checklistlength(station_list, 1, 10), '%s - list length must be greater than 0 and less than equals 10' % (self.methodname))
+        self.assertTrue(self.checklistlength(station_list, 1, 10), 
+                        '%s - list length must be greater than 0 and less than equals 10' % (self.methodname))
 
         for element in station_list:
             self.logger.info(element)
             
-            self.assertTrue(self.checkdatetime(element.dt), '%s - datetime isn\'t from the current day' % (self.methodname))
+            self.assertTrue(self.checkdatetime(element.dt), 
+                            '%s - datetime isn\'t from the current day' % (self.methodname))
             self.assertEquals(element.get_type_string(), self.getstationstring(element.stationtype), 
                               '%s - station\'s string representation fails ' % self.methodname)
-            self.assertTrue(self.checkid(element.identifier), '%s - identifier must be a an int greater than zero ' % self.methodname)
+            self.assertTrue(self.checkid(element.identifier), 
+                            '%s - identifier must be a an int greater than zero ' % self.methodname)
             self.assertTrue(self.checkcoordinates(element.get_coord_tuple()), 
                             '%s - latitude must be in range -90.0 to +90.0 and longitude must be in range -180.0 to +180.0' % self.methodname)
             self.assertTrue(self.checktemperatures(element.get_main_temp(), element.get_main_temp_c(), element.get_main_temp_f()), 
                             '%s - temperature conversion between kelvin, degree celsius and degree fahrenheit is wrong' % self.methodname)
-            self.assertTrue(self.checkpressure(element.get_main_pressure()), '%s - pressure must be greather or equal to 0' % self.methodname)
-            self.assertTrue(self.checkhumidity(element.get_main_humidity()), '%s - humidity must be greather or equal to 0' % self.methodname)
-            self.assertTrue(self.checkwindspeed(element.get_wind_speed(), element.get_wind_speed_km()), '%s - conversion between windspeed in mps and kms fails')
-            self.assertTrue(self.checkwindgust(element.get_wind_gust()), '%s - wind gust must be greather or equal to 0' % self.methodname)
+            self.assertTrue(self.checkpressure(element.get_main_pressure()), 
+                            '%s - pressure must be greather or equal to 0' % self.methodname)
+            self.assertTrue(self.checkhumidity(element.get_main_humidity()), 
+                            '%s - humidity must be greather or equal to 0' % self.methodname)
+            self.assertTrue(self.checkwindspeed(element.get_wind_speed(), element.get_wind_speed_km()), 
+                            '%s - conversion between windspeed in mps and kms fails')
+            self.assertTrue(self.checkwindgust(element.get_wind_gust()), 
+                            '%s - wind gust must be greather or equal to 0' % self.methodname)
             self.assertTrue(self.checkcloudconditions(element.get_clouds_conditions()), 
                             '%s - cloud condition has no valid value or value isn\'t valid' % self.methodname)
             
