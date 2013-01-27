@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from json import load
 from urllib2 import urlopen
 from pyowmdata import Station

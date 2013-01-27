@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 def get_list_item(listitems, item):
     ''' returns the desired item of a list if available otherwise return None'''

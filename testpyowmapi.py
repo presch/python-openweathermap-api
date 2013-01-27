@@ -1,8 +1,5 @@
-'''
-Created on 21.01.2013
+#!/usr/bin/env python
 
-@author: phil
-'''
 import unittest
 import random
 import logging

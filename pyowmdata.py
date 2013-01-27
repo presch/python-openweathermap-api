@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import datetime
 from utilities import *
 
@@ -9,10 +11,11 @@ class Data(object):
     ''' one mile has 1.609344 km'''
     KM_MILES = 1.609344
     
-    conditions = {'NCT' : 'no clouds detected', 'NSC' : 'nil signifant cloud', 'SKC' : 'clear sky', 'CLR' : 'clear sky',
-                   'FEW' :'few clouds','OVC' : 'overcast clouds', 'BKN' : 'broken clouds', 'CAVOK' : 'ceiling and visibility ok',
-                   'SCT' : 'scattered'}
-    station_types = {'1' : 'Airport station', '2' : 'SWOP station', '3' : 'SYNOP station', '4' : '', '5' : 'DIY station'}
+    conditions = {'NCT' : 'no clouds detected', 'NSC' : 'nil signifant cloud', 'SKC' : 'clear sky',
+                  'CLR' : 'clear sky', 'FEW' :'few clouds','OVC' : 'overcast clouds', 'BKN' : 'broken clouds',
+                  'CAVOK' : 'ceiling and visibility ok', 'SCT' : 'scattered'}
+    station_types = {'1' : 'Airport station', '2' : 'SWOP station', '3' : 'SYNOP station', '4' : '', 
+                     '5' : 'DIY station'}
     
     def get_station(self, nr):
         return self.station_types[str(nr)]
