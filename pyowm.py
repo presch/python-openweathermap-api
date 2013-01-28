@@ -6,230 +6,230 @@ from pyowmdata import Station
 from pyowmdata import City
 from pyowmdata import Forecast
 from pyowmdata import ForecastItem
-from pyowmdata import ForecastItem_compact
-from pyowmdata import Forecast_compact
+from pyowmdata import ForecastItemcompact
+from pyowmdata import Forecastcompact
 from utilities import *
 import simplejson
 
 class OpenWeatherMapApi(object):
     
-    openweathermap_find_url = 'http://openweathermap.org/data/2.1/find/'
-    openweathermap_city_url = 'http://openweathermap.org/data/2.1/weather/city/'
-    openweathermap_forecast_url = 'http://openweathermap.org/data/2.1/forecast/city/'
+    OPENWEATHERMAP_FIND_URL = 'http://openweathermap.org/data/2.1/find/'
+    OPENWEATHERMAP_CITY_URL = 'http://openweathermap.org/data/2.1/weather/city/'
+    OPENWEATHERMAP_FORECAST_URL = 'http://openweathermap.org/data/2.1/forecast/city/'
     
-    def get_station_by_coordinates(self, latitude, longitude, count):
+    def getstationbycoordinates(self, latitude, longitude, count):
         ''' return a list of stations next to the latitude and longitude given'''
         
-        query_part = 'station?lat=%f&lon=%f&cnt=%d' % (latitude, longitude, count)
-        query_url = self.openweathermap_find_url + query_part
+        querypart = 'station?lat=%f&lon=%f&cnt=%d' % (latitude, longitude, count)
+        queryurl = self.OPENWEATHERMAP_FIND_URL + querypart
         
         #stations = self.open_url_decode_json(query_url)
-        stations = self.open_url_decode_simplejson(query_url)
+        stations = self.openurldecodesimplejson(queryurl)
         
-        return self.get_station_list_from_dictionary(stations)
+        return self.getstationlistfromdictionary(stations)
         
     
-    def get_city_weather_by_coordinates(self, latitude, longitude, count):
+    def getcityweatherbycoordinates(self, latitude, longitude, count):
         ''' return a list of cities next to the latitude and longitude given'''
         
-        query_part = 'city?lat=%f&lon=%f&cnt=%d' % (latitude, longitude, count)
-        query_url = self.openweathermap_find_url + query_part
+        querypart = 'city?lat=%f&lon=%f&cnt=%d' % (latitude, longitude, count)
+        queryurl = self.OPENWEATHERMAP_FIND_URL + querypart
         
         #cities = self.open_url_decode_json(query_url)
-        cities = self.open_url_decode_simplejson(query_url)
+        cities = self.openurldecodesimplejson(queryurl)
         
-        return self.get_city_list_from_dictionary(cities)
+        return self.getcitylistfromdictionary(cities)
         
     
-    def get_station_by_bounding_box(self, bbox):
+    def getstationbyboundingbox(self, bbox):
         ''' return a list of stations whose geographic coordinates lay within the rectangle bbox'''
         
-        query_part = 'station?bbox=%s&cluster=yes' % bbox
-        query_url = self.openweathermap_find_url + query_part
+        querypart = 'station?bbox=%s&cluster=yes' % bbox
+        queryurl = self.OPENWEATHERMAP_FIND_URL + querypart
         
         #stations = self.open_url_decode_json(query_url)
-        stations = self.open_url_decode_simplejson(query_url)
+        stations = self.openurldecodesimplejson(queryurl)
         
-        return self.get_station_list_from_dictionary(stations)
+        return self.get_stationlistfromdictionary(stations)
     
-    def get_city_weather_by_bounding_box(self, bbox):
+    def getcityweatherbyboundingbox(self, bbox):
         ''' return a list of cities whose geographic coordinates lay 
         within the rectangle bbox'''
         
-        query_part = 'city?bbox=%s&cluster=yes' % bbox
-        query_url = self.openweathermap_find_url + query_part
+        querypart = 'city?bbox=%s&cluster=yes' % bbox
+        queryurl = self.OPENWEATHERMAP_FIND_URL + querypart
         
-        cities = self.open_url_decode_simplejson(query_url)
+        cities = self.openurldecodesimplejson(queryurl)
         
-        return self.get_city_list_from_dictionary(cities)
+        return self.getcitylistfromdictionary(cities)
     
-    def get_station_by_coordinates_radius(self, latitude, longitude, radius):
+    def getstationbycoordinatesradius(self, latitude, longitude, radius):
         ''' return a list of stations whose coordinates lay within a circle, 
         circle is defined by a center point and a radius'''
         
-        query_part = 'station?lat=%f&lon=%f&radius=%d' % (latitude, longitude, radius)
-        query_url = self.openweathermap_find_url + query_part
+        querypart = 'station?lat=%f&lon=%f&radius=%d' % (latitude, longitude, radius)
+        queryurl = self.OPENWEATHERMAP_FIND_URL + querypart
         
-        stations = self.open_url_decode_simplejson(query_url)
+        stations = self.openurldecodesimplejson(queryurl)
         
-        return self.get_station_list_from_dictionary(stations)
+        return self.getstationlistfromdictionary(stations)
     
-    def get_city_weather_by_coordinates_radius(self, latitude, longitude, radius):
+    def getcityweatherbycoordinatesradius(self, latitude, longitude, radius):
         ''' return a list of cities whose coordinates lay witin a circle, 
         circle is defined by a center point and a radius'''
         
-        query_part = 'city?lat=%f&lon=%f&radius=%d' % (latitude, longitude, radius)
-        query_url = self.openweathermap_find_url + query_part
+        querypart = 'city?lat=%f&lon=%f&radius=%d' % (latitude, longitude, radius)
+        queryurl = self.OPENWEATHERMAP_FIND_URL + querypart
         
-        cities = self.open_url_decode_simplejson(query_url)
+        cities = self.openurldecodesimplejson(queryurl)
         
-        return self.get_city_list_from_dictionary(cities)
+        return self.getcitylistfromdictionary(cities)
     
     
-    def get_city_by_city_countrycode(self, city, like, countrycode):
+    def getcitybycitycountrycode(self, city, like, countrycode):
         ''' return a list of cities that match search substring'''
         
-        query_url = None
+        queryurl = None
         
         if countrycode != None:
-            query_part = 'name?q=%s,%s' % (city, countrycode)
-            query_url = self.openweathermap_find_url + query_part
+            querypart = 'name?q=%s,%s' % (city, countrycode)
+            queryurl = self.OPENWEATHERMAP_FIND_URL + querypart
             
         if like != None:
-            query_part = 'name?q=%s&type=like' % (city)
-            query_url = self.openweathermap_find_url + query_part
+            querypart = 'name?q=%s&type=like' % (city)
+            queryurl = self.OPENWEATHERMAP_FIND_URL + querypart
             
         if city != None and like == None and countrycode == None:
-            query_part = 'name?q=%s' % city
-            query_url = self.openweathermap_find_url + query_part
+            querypart = 'name?q=%s' % city
+            queryurl = self.OPENWEATHERMAP_FIND_URL + querypart
             
-        cities = self.open_url_decode_simplejson(query_url)
+        cities = self.openurldecodesimplejson(queryurl)
         
-        return self.get_city_list_from_dictionary(cities)
+        return self.getcitylistfromdictionary(cities)
     
-    def get_city_weater_by_id(self, identifier):
+    def getcityweaterbyid(self, identifier):
         ''' return the current weather in a concrete chosen city where you know 
         the city id.'''
         
-        query_part = '%d' % (identifier)
-        query_url = self.openweathermap_city_url + query_part
+        querypart = '%d' % (identifier)
+        queryurl = self.OPENWEATHERMAP_CITY_URL + querypart
         
-        city = self.open_url_decode_simplejson(query_url)
+        city = self.openurldecodesimplejson(queryurl)
         
-        return City(get_list_item(city, 'id'), get_list_item(city, 'name'), 
-                    get_list_item(city, 'coord'), get_list_item(city, 'distance'), 
-                    get_list_item(city, 'main'), get_list_item(city, 'dt'), 
-                    get_list_item(city, 'wind'), get_list_item(city, 'clouds'), 
-                    get_list_item(city, 'weather'), get_list_item(city, 'sys'))
+        return City(getlistitem(city, 'id'), getlistitem(city, 'name'), 
+                    getlistitem(city, 'coord'), getlistitem(city, 'distance'), 
+                    getlistitem(city, 'main'), getlistitem(city, 'dt'), 
+                    getlistitem(city, 'wind'), getlistitem(city, 'clouds'), 
+                    getlistitem(city, 'weather'), getlistitem(city, 'sys'))
     
-    def get_forecast_by_id(self, identifier):
+    def getforecastbyid(self, identifier):
         ''' return the forecast of the city for the next 7 days by given id'''
         
-        query_part = '%d' % (identifier)
-        query_url = self.openweathermap_forecast_url + query_part
+        querypart = '%d' % (identifier)
+        queryurl = self.OPENWEATHERMAP_FORECAST_URL + querypart
         
-        forecast = self.open_url_decode_simplejson(query_url)
+        forecast = self.openurldecodesimplejson(queryurl)
         
-        self.get_forecast_list_from_dictionary(forecast)
+        self.getforecastlistfrom_dictionary(forecast)
         
     
-    def get_forecast_by_name(self, city):
+    def getforecastbyname(self, city):
         ''' return the forecast of the city for the next 7 days by given city''' 
         
-        query_part = '?q=%s' % (city)
-        query_url = self.openweathermap_forecast_url + query_part
+        querypart = '?q=%s' % (city)
+        queryurl = self.OPENWEATHERMAP_FORECAST_URL + querypart
         
-        forecast = self.open_url_decode_simplejson(query_url)
+        forecast = self.openurldecodesimplejson(queryurl)
         
-        self.get_forecast_list_from_dictionary(forecast)
+        self.getforecastlistfromdictionary(forecast)
     
-    def get_daily_forecast(self, identifier):
+    def getdailyforecast(self, identifier):
         ''' return the forecast of the city for the next 7 days in a compact 
         format by given id'''
         
-        query_part = '%d?mode=daily_compact' % (identifier)
-        query_url = self.openweathermap_forecast_url + query_part
+        querypart = '%d?mode=daily_compact' % (identifier)
+        queryurl = self.OPENWEATHERMAP_FORECAST_URL + querypart
         
-        compact_forecast = self.open_url_decode_simplejson(query_url)
+        compactforecast = self.openurldecodesimplejson(queryurl)
         
-        self.get_compact_forecast_from_dictionary(compact_forecast)
+        self.getcompactforecastfromdictionary(compactforecast)
     
-    def get_weather_station_information(self, identifier):
+    def getweatherstationinformation(self, identifier):
         ''' not implemented yet '''
         pass
     
-    def get_station_history_by_id(self, identifier, stationtype):
+    def getstation_historybyid(self, identifier, stationtype):
         ''' not implemented yet '''
         pass
     
-    def get_station_history_by_id_start_end(self, identifier, stationtype, start, end):
+    def getstationhistorybyidstartend(self, identifier, stationtype, start, end):
         ''' not implemented yet '''
         pass
     
-    def get_station_list_from_dictionary(self, dictionary):
+    def getstationlistfromdictionary(self, dictionary):
         ''' returns a list of Station obejcts'''
-        station_list = []
+        stationlist = []
         
-        for s_station in dictionary['list']:
-            station = Station(get_list_item(s_station, 'id'), get_list_item(s_station, 'dt'), 
-                              get_list_item(s_station, 'name'), get_list_item(s_station, 'type'), 
-                              get_list_item(s_station, 'coord'), get_list_item(s_station, 'distance'), 
-                              get_list_item(s_station, 'main'), get_list_item(s_station, 'wind'), 
-                              get_list_item(s_station, 'clouds'), get_list_item(s_station, 'rain'))
-            station_list.append(station)
+        for sstation in dictionary['list']:
+            station = Station(getlistitem(sstation, 'id'), getlistitem(sstation, 'dt'), 
+                              getlistitem(sstation, 'name'), getlistitem(sstation, 'type'), 
+                              getlistitem(sstation, 'coord'), getlistitem(sstation, 'distance'), 
+                              getlistitem(sstation, 'main'), getlistitem(sstation, 'wind'), 
+                              getlistitem(sstation, 'clouds'), getlistitem(sstation, 'rain'))
+            stationlist.append(station)
             
-        return station_list
+        return stationlist
     
-    def get_city_list_from_dictionary(self, dictionary):
+    def getcitylistfromdictionary(self, dictionary):
         ''' returns a list of City objects'''
-        city_list = []
+        citylist = []
         
-        for s_city in dictionary['list']:
-            city = City(get_list_item(s_city, 'id'), get_list_item(s_city, 'name'),
-                        get_list_item(s_city, 'coord'), get_list_item(s_city, 'distance'), 
-                        get_list_item(s_city, 'main'), get_list_item(s_city, 'dt'), 
-                        get_list_item(s_city, 'wind'), get_list_item(s_city, 'clouds'), 
-                        get_list_item(s_city, 'weather'), get_list_item(s_city, 'sys'))
+        for scity in dictionary['list']:
+            city = City(getlistitem(scity, 'id'), getlistitem(scity, 'name'),
+                        getlistitem(scity, 'coord'), getlistitem(scity, 'distance'), 
+                        getlistitem(scity, 'main'), getlistitem(scity, 'dt'), 
+                        getlistitem(scity, 'wind'), getlistitem(scity, 'clouds'), 
+                        getlistitem(scity, 'weather'), getlistitem(scity, 'sys'))
             
-            city_list.append(city)
+            citylist.append(city)
             
-        return city_list
+        return citylist
     
-    def get_forecast_list_from_dictionary(self, dictionary):
+    def getforecastlistfromdictionary(self, dictionary):
         ''' returns a Forecast object containing a list of forecast items'''
         
-        forecast_items = []
+        forecastitems = []
          
-        for item in get_list_item(dictionary, 'list'):
-            forecast_item = ForecastItem(get_list_item(item, 'clouds'), get_list_item(item, 'snow'), 
-                                         get_list_item(item, 'dt_txt'), get_list_item(item, 'weather'), 
-                                         get_list_item(item, 'main'), get_list_item(item, 'wind'))
-            forecast_items.append(forecast_item)
+        for item in getlistitem(dictionary, 'list'):
+            forecastitem = ForecastItem(getlistitem(item, 'clouds'), getlistitem(item, 'snow'), 
+                                         getlistitem(item, 'dt_txt'), getlistitem(item, 'weather'), 
+                                         getlistitem(item, 'main'), getlistitem(item, 'wind'))
+            forecastitems.append(forecastitem)
 
-        return Forecast(get_list_item(dict, 'id'), get_list_item(dict, 'city'), 
-                        get_list_item(dict, 'url'), forecast_items)
+        return Forecast(getlistitem(dict, 'id'), getlistitem(dict, 'city'), 
+                        getlistitem(dict, 'url'), forecastitems)
         
-    def get_compact_forecast_from_dictionary(self, dictionary):
+    def getcompactforecastfromdictionary(self, dictionary):
         ''' returns a Forecast_compact object containing ForecastItem_compact objects'''
         
-        forecast_compact_items = []
+        forecastcompactitems = []
         
-        for item in get_list_item(dictionary, 'list'):
-            compact_forecast_item = ForecastItem_compact(get_list_item(item, 'dt'), get_list_item(item, 'temp'), 
-                                                         get_list_item(item, 'night'), get_list_item(item, 'eve'), 
-                                                         get_list_item(item, 'morn'), get_list_item(item, 'pressure'), 
-                                                         get_list_item(item, 'humidity'), get_list_item(item, 'weather'), 
-                                                         get_list_item(item, 'speed'),                                                      get_list_item(item, 'deg'))
-            forecast_compact_items.append(compact_forecast_item)
+        for item in getlistitem(dictionary, 'list'):
+            compactforecastitem = ForecastItemcompact(getlistitem(item, 'dt'), getlistitem(item, 'temp'), 
+                                                         getlistitem(item, 'night'), getlistitem(item, 'eve'), 
+                                                         getlistitem(item, 'morn'), getlistitem(item, 'pressure'), 
+                                                         getlistitem(item, 'humidity'), getlistitem(item, 'weather'), 
+                                                         getlistitem(item, 'speed'), getlistitem(item, 'deg'))
+            forecastcompactitems.append(compactforecastitem)
             
-        return Forecast_compact(forecast_compact_items)
+        return Forecastcompact(forecastcompactitems)
     
-    def open_url_decode_json(self, url):
+    def openurldecodejson(self, url):
         ''' open a given url and returns the python object representation of a json string'''
         query_data = urlopen(url)
         return load(query_data)
     
-    def open_url_decode_simplejson(self, url):
+    def openurldecodesimplejson(self, url):
         ''' open a given url and returns the python object representation of a json string'''
         query_data = urlopen(url).read()
         return simplejson.loads(query_data)

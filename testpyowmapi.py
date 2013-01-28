@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import unittest
-import random
 import logging
 import re
 from datetime import datetime
@@ -20,45 +19,71 @@ class Test(unittest.TestCase):
         self.latitude = 20#random.uniform(-90.0, 90.0)
         self.longitude = 50#random.uniform(-180.0, 180.0)
         
-        self.logger.info('latitude = %f' % self.latitude)
-        self.logger.info('longitude = %f' % self.longitude)
+        #self.logger.info('latitude = %f' % self.latitude)
+        #self.logger.info('longitude = %f' % self.longitude)
+        
 
         
-    def test_get_station_by_coordinates(self):
+    def testgetstationbycoordinates(self):
         api = OpenWeatherMapApi()
-        station_list = api.get_station_by_coordinates(self.latitude, self.longitude, 10)
+        stationlist = api.getstationbycoordinates(self.latitude, self.longitude, 10)
         
-        self.methodname = 'test_get_station_by_coordinates()'
-        
-        self.assertIsNotNone(station_list, '%s - station list must not be null' % (self.methodname))
-        self.assertTrue(self.checklistlength(station_list, 1, 10), 
-                        '%s - list length must be greater than 0 and less than equals 10' % (self.methodname))
+        self.assertIsNotNone(stationlist, 'station list must not be null')
+        self.assertTrue(self.checklistlength(stationlist, 1, 10), 
+                        'list length must be greater than 0 and less than equals 10')
 
-        for element in station_list:
-            self.logger.info(element)
+        for station in stationlist:
+            self.logger.info(station)
             
-            self.assertTrue(self.checkdatetime(element.dt), 
-                            '%s - datetime isn\'t from the current day' % (self.methodname))
-            self.assertEquals(element.get_type_string(), self.getstationstring(element.stationtype), 
-                              '%s - station\'s string representation fails ' % self.methodname)
-            self.assertTrue(self.checkid(element.identifier), 
-                            '%s - identifier must be a an int greater than zero ' % self.methodname)
-            self.assertTrue(self.checkcoordinates(element.get_coord_tuple()), 
-                            '%s - latitude must be in range -90.0 to +90.0 and longitude must be in range -180.0 to +180.0' % self.methodname)
-            self.assertTrue(self.checktemperatures(element.get_main_temp(), element.get_main_temp_c(), element.get_main_temp_f()), 
-                            '%s - temperature conversion between kelvin, degree celsius and degree fahrenheit is wrong' % self.methodname)
-            self.assertTrue(self.checkpressure(element.get_main_pressure()), 
-                            '%s - pressure must be greather or equal to 0' % self.methodname)
-            self.assertTrue(self.checkhumidity(element.get_main_humidity()), 
-                            '%s - humidity must be greather or equal to 0' % self.methodname)
-            self.assertTrue(self.checkwindspeed(element.get_wind_speed(), element.get_wind_speed_km()), 
-                            '%s - conversion between windspeed in mps and kms fails')
-            self.assertTrue(self.checkwindgust(element.get_wind_gust()), 
-                            '%s - wind gust must be greather or equal to 0' % self.methodname)
-            self.assertTrue(self.checkcloudconditions(element.get_clouds_conditions()), 
-                            '%s - cloud condition has no valid value or value isn\'t valid' % self.methodname)
+            self.assertTrue(self.checkdatetime(station.dt), 
+                            'datetime isn\'t from the current day')
+            self.assertEquals(station.gettypestring(), self.getstationstring(station.stationtype), 
+                              'station\'s string representation fails ')
+            self.assertTrue(self.checkid(station.identifier), 
+                            'identifier must be a an int greater than zero ')
+            self.assertTrue(self.checkcoordinates(station.getcoordtuple()), 
+                            'latitude must be in range -90.0 to +90.0 and longitude must be in range -180.0 to +180.0')
+            self.assertTrue(self.checktemperatures(station.getmaintemp(), station.getmaintempc(), station.getmaintempf()), 
+                            'temperature conversion between kelvin, degree celsius and degree fahrenheit is wrong')
+            self.assertTrue(self.checkpressure(station.getmainpressure()), 
+                            'pressure must be greather or equal to 0')
+            self.assertTrue(self.checkhumidity(station.getmainhumidity()), 
+                            'humidity must be greather or equal to 0')
+            self.assertTrue(self.checkwindspeed(station.getwindspeed(), station.getwindspeedkm()), 
+                            'conversion between windspeed in mps and kms fails')
+            self.assertTrue(self.checkwindgust(station.getwindgust()), 
+                            'wind gust must be greather or equal to 0')
+            self.assertTrue(self.checkcloudconditions(station.getcloudsconditions()), 
+                            'cloud condition has no valid value or value isn\'t valid')
+            
+    def testgetcityweatherbycoordinates(self):
+        api = OpenWeatherMapApi()
+        citylist = api.getcityweatherbycoordinates(self.latitude, self.longitude, 10)
+        
+        
+        self.assertIsNotNone(citylist, '%s - city list must not be null')
+        self.assertTrue(self.checklistlength(citylist, 1, 10), 
+                        '%s - list length must be greater than 0 and less than equals 10')
+        
+        for city in citylist:
+            self.logger.info(city)
+            
+            self.assertTrue(self.checkid(city.identifier), 'identifier must be an int greater than zero')
+            self.assertTrue(self.checkname(city.name), 'city name must match regex [A-Za-z]+\s*[A-Za-z]*')
+            self.assertTrue(self.checkclouds(city.getclouds()), 'city clouds must be greater equal 0')
+            self.assertTrue(self.checkcoordinates(city.getcoordtuple()), 
+                            'latitude must be in range -90.0 to +90.0 and longitude must be in range -180.0 to +180.0')
+            self.assertTrue(self.checktemperatures(city.getmaintemp(), city.getmaintempc(), city.getmaintempf()), 
+                            'temperature conversion between kelvin, degree celsius and degree fahrenheit is wrong')
             
             
+            
+        
+        
+            
+    def checkclouds(self, clouds):
+        if clouds >= 0:
+            return True
             
     def checklistlength(self, listToCheck, minLength, maxLength):
         if len(listToCheck) >= minLength and len(listToCheck) <=maxLength:
@@ -125,6 +150,12 @@ class Test(unittest.TestCase):
             
         return True
     
+    def checkname(self, name):
+        result = re.match('[A-Za-z]+\s*[A-Za-z]*', name)
+        
+        if result != None:
+            return True
+    
     def checkrainhours(self, rain):
         pass
     
@@ -148,28 +179,5 @@ class Test(unittest.TestCase):
             return True
             
 
-  #  def test_get_station_by_coordinates(self):
-  #      api = OpenWeatherMapApi()
-  #      stations = api.get_station_by_coordinates(59.56, 30.20, 10)
-  #      print stations[0].get_datetime_string()
-  #      print stations[0].get_coord_tuple()
-  #      print stations[0].get_main_temp_c()
-  #      print stations[0].get_main_temp_f()
-        
-  #  def test_get_city_weather_by_coordinates(self):
-  #      api = OpenWeatherMapApi()
-  #      cities = api.get_city_weather_by_coordinates(20.45, 40.34, 5)
-        
-  #  def test_get_forecast_by_id(self):
-  #      api = OpenWeatherMapApi()
-  #      forecast = api.get_forecast_by_id(524901)
-  
-  #  def test_get_forecast_by_id(self):
-  #      api = OpenWeatherMapApi()
-  #      forecast = api.get_forecast_by_id(524901)
-  #      print 'test'
-
-
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

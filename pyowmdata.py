@@ -14,11 +14,11 @@ class Data(object):
     conditions = {'NCT' : 'no clouds detected', 'NSC' : 'nil signifant cloud', 'SKC' : 'clear sky',
                   'CLR' : 'clear sky', 'FEW' :'few clouds','OVC' : 'overcast clouds', 'BKN' : 'broken clouds',
                   'CAVOK' : 'ceiling and visibility ok', 'SCT' : 'scattered'}
-    station_types = {'1' : 'Airport station', '2' : 'SWOP station', '3' : 'SYNOP station', '4' : '', 
+    stationtypes = {'1' : 'Airport station', '2' : 'SWOP station', '3' : 'SYNOP station', '4' : '', 
                      '5' : 'DIY station'}
     
-    def get_station(self, nr):
-        return self.station_types[str(nr)]
+    def getstation(self, nr):
+        return self.stationtypes[str(nr)]
     
     
 
@@ -47,71 +47,71 @@ class Station(object):
         ''' rain data of the station '''
         self.rain = rain
         
-    def get_type_string(self):
+    def gettypestring(self):
         ''' return the type as string'''
         data = Data()
-        return data.get_station(self.stationtype)
+        return data.getstation(self.stationtype)
         
-    def get_datetime_string(self):
+    def getdatetimestring(self):
         ''' return the date and time from the station in the following format year-month-day hour:minute (24hours)'''
         return datetime.datetime.fromtimestamp(self.dt).strftime('%Y-%m-%d %H:%M')
         
-    def get_coord_tuple(self):
+    def getcoordtuple(self):
         ''' return the coordinates as tuple (latitude, longitude'''
         return self.coord['lat'], self.coord['lon']
     
-    def get_main_temp(self):
+    def getmaintemp(self):
         ''' return the temperature of the station '''
-        return get_list_item(self.main, 'temp')
+        return getlistitem(self.main, 'temp')
         
-    def get_main_temp_c(self):
+    def getmaintempc(self):
         ''' return the temperature of the station in degree celsius'''
-        return self.get_main_temp() - Data.KELVIN_NULL
+        return self.getmaintemp() - Data.KELVIN_NULL
     
-    def get_main_temp_f(self):
+    def getmaintempf(self):
         ''' return the temperature of the station in degree fahrenheit'''
-        return (self.get_main_temp_c() * 9) / 5 + 32
+        return (self.getmaintempc() * 9) / 5 + 32
         
-    def get_main_pressure(self):
+    def getmainpressure(self):
         ''' return the atmospheric pressure in kPa'''
-        return get_list_item(self.main, 'pressure')
+        return getlistitem(self.main, 'pressure')
         
-    def get_main_humidity(self):
+    def getmainhumidity(self):
         ''' return the humidity in %'''
-        return get_list_item(self.main, 'humidity')
+        return getlistitem(self.main, 'humidity')
         
-    def get_wind_speed(self):
+    def getwindspeed(self):
         ''' return the wind speed in mps'''
-        get_list_item(self.wind, 'speed')
+        getlistitem(self.wind, 'speed')
         
-    def get_wind_speed_km(self):
+    def getwindspeedkm(self):
         ''' return the windspeed in kms'''
-        if self.get_wind_speed() != None:
-            return self.get_wind_speed() * Data.KM_MILES
+        if self.getwindspeed() != None:
+            return self.getwindspeed() * Data.KM_MILES
         
-    def get_wind_deg(self):
+    def getwinddeg(self):
         ''' return the direction of the wind in degrees(meterological)'''
-        return get_list_item(self.wind, 'deg')
+        return getlistitem(self.wind, 'deg')
         
-    def get_wind_gust(self):
+    def getwindgust(self):
         ''' return the speed of wind gust'''
-        return get_list_item(self.wind, 'gust')
+        return getlistitem(self.wind, 'gust')
         
-    #def get_wind_varbeg(self):
+    #def getwindvarbeg(self):
     #    ''' return the wind direction'''
-    #    return get_list_item(self.wind, 'var_beg')
+    #    return getlistitem(self.wind, 'var_beg')
         
-    #def get_wind_varend(self):
+    #def getwindvarend(self):
     #    ''' return the wind direction'''
-    #    return get_list_item(self.wind, 'var_end')
+    #    return getlistitem(self.wind, 'var_end')
         
-    def get_clouds_distance(self):
+    def getcloudsdistance(self):
         ''' return the cloud distance'''
-        return get_list_item(self.clouds, 'distance')
+        return getlistitem(self.clouds, 'distance')
         
-    def get_clouds_conditions(self):
+    def getcloudsconditions(self):
         ''' return the clouds condition '''
-        #return get_list_item(self.clouds, 'condition')
+        #return getlistitem(self.clouds, 'condition')
         conditions = {}
         if self.clouds != None:
             for element in self.clouds:
@@ -121,29 +121,29 @@ class Station(object):
                     conditions[key] = value
         return conditions
         
-    def get_rain_1h(self):
+    def getrain1h(self):
         ''' return rain in recent hour'''
-        return get_list_item(self.rain, '1h')
+        return getlistitem(self.rain, '1h')
         
-    def get_rain_3h(self):
+    def getrain3h(self):
         ''' return rain in recent 3 hours'''
-        return get_list_item(self.rain, '3h')
+        return getlistitem(self.rain, '3h')
         
-    def get_rain_6h(self):
+    def getrain6h(self):
         ''' return rain in recent 6 hours'''
-        return get_list_item(self.rain, '6h')
+        return getlistitem(self.rain, '6h')
       
-    def get_rain_12h(self):
+    def getrain12h(self):
         ''' return rain in recent 12 hours'''
-        return get_list_item(self.rain, '12h')
+        return getlistitem(self.rain, '12h')
         
-    def get_rain_24h(self):
+    def getrain24h(self):
         ''' return rain in recent 24 hours'''
-        return get_list_item(self.rain, '24h')
+        return getlistitem(self.rain, '24h')
         
-    def get_rain_day(self):
+    def getrainday(self):
         ''' return rain in recent day'''
-        return get_list_item(self.rain, 'day')
+        return getlistitem(self.rain, 'day')
         
     def __repr__(self):
         return 'Station class: [id=%s, dt=%s, name=%s, type=%s]' % (self.identifier, self.dt, self.name, self.stationtype) 
@@ -152,7 +152,7 @@ class Station(object):
 class City(object):
     ''' This class represents the weather information of a city'''
     
-    icon_url = 'http://openweathermap.org/img/w/%s.png'
+    ICON_URL = 'http://openweathermap.org/img/w/%s.png'
     
     def __init__(self, identifier, name, coord, distance, main, dt, wind, clouds, weather, sys):
         ''' identificator '''
@@ -176,307 +176,320 @@ class City(object):
         ''' ?? '''
         self.sys = sys
         
-    def get_temp(self):
+    def getcoordtuple(self):
+        ''' return the coordinates as tuple (latitude, longitude'''
+        return self.coord['lat'], self.coord['lon']
+        
+    def getmaintemp(self):
         ''' return the current temperature in kelvin'''
-        return get_list_item(self.main, 'temp')
+        return getlistitem(self.main, 'temp')
     
-    def get_temp_c(self):
+    def getmaintempc(self):
         ''' return the current temperature in degree celsius'''
-        self.get_temp() - Data.KELVIN_NULL
+        return self.getmaintemp() - Data.KELVIN_NULL
     
-    def get_temp_f(self):
+    def getmaintempf(self):
         ''' return the current temperature in degree fahrenheit'''
-        return (self.get_temp_c() * 9) / 5 + 32
+        return (self.getmaintempc() * 9) / 5 + 32
     
-    def get_min_temp(self):
+    def getmainmintemp(self):
         ''' return min temperature'''
-        return get_list_item(self.main, 'temp_min')
+        return getlistitem(self.main, 'temp_min')
     
-    def get_min_temp_c(self):
+    def getmainmintempc(self):
         ''' return min temperature in degree celsius'''
-        return self.get_min_temp() - Data.KELVIN_NULL
+        return self.getmainmintemp() - Data.KELVIN_NULL
     
-    def get_min_temp_f(self):
+    def getmainmintempf(self):
         ''' return min temperature in degree fahrenheit '''
-        return (self.get_min_temp_c() * 9) / 5 + 32
+        return (self.getmainmintempc() * 9) / 5 + 32
     
-    def get_max_temp(self):
+    def getmainmaxtemp(self):
         ''' return max temperature'''
-        return get_list_item(self.main, 'temp_max')
+        return getlistitem(self.main, 'temp_max')
     
-    def get_max_temp_c(self):
+    def getmainmaxtempc(self):
         ''' return max temperature in degree celsius'''
-        return self.get_max_temp() - Data.KELVIN_NULL
+        return self.getmainmaxtemp() - Data.KELVIN_NULL
     
-    def get_max_temp_f(self):
+    def getmainmaxtempf(self):
         ''' return max temperature in degree fahrenheit '''
-        return (self.get_max_temp_c() * 9) / 5 + 32
+        return (self.getmainmaxtempc() * 9) / 5 + 32
     
-    def get_pressure(self):
+    def getmainpressure(self):
         ''' return the pressure in hPa '''
-        return get_list_item(self.main, 'pressure')
+        return getlistitem(self.main, 'pressure')
     
-    def get_humidity(self):
+    def getmainhumidity(self):
         ''' return the humitiy in percent'''
-        return get_list_item(self.main, 'humidity')
+        return getlistitem(self.main, 'humidity')
     
-    def get_clouds(self):
+    def getclouds(self):
         ''' return the cloudiness in percent'''
-        return get_list_item(self.clouds, 'all')
+        return getlistitem(self.clouds, 'all')
     
-    def get_wind_speed(self):
+    def getwindspeed(self):
         ''' return the windspeed in mps'''
-        return get_list_item(self.wind, 'speed')
+        return getlistitem(self.wind, 'speed')
     
-    def get_wind_speed_km(self):
+    def getwindspeedkm(self):
         ''' return the windspeed in kms'''
-        return self.get_wind_speed() * Data.KM_MILES
+        return self.getwindspeed() * Data.KM_MILES
     
-    def get_wind_deg(self):
+    def getwinddeg(self):
         ''' return the wind direction in degrees(meteorological)'''
-        return get_list_item(self.wind, 'deg')
+        return getlistitem(self.wind, 'deg')
     
-    def get_wind_gust(self):
+    def getwindgust(self):
         ''' return the wind gust??'''
-        return get_list_item(self.wind, 'gust')
+        return getlistitem(self.wind, 'gust')
     
-    def get_weather_id(self):
+    def getweatherid(self):
         ''' return the weather id'''
-        return get_list_item(self.weather, 'id')
+        return getlistitem(self.weather, 'id')
     
-    def get_weather_main(self):
+    def getweathermain(self):
         ''' return the weather main'''
-        return get_list_item(self.weather, 'main')
+        return getlistitem(self.weather, 'main')
     
-    def get_weather_description(self):
+    def getweatherdescription(self):
         ''' return the weather description'''
-        return get_list_item(self.weather, 'description')
+        return getlistitem(self.weather, 'description')
             
-    def get_weather_icon_url(self):
+    def getweathericonurl(self):
         ''' return the url to the current weather icon'''
-        icon = get_list_item(self.weather, 'icon')
-        return self.icon_url % (icon)
+        icon = getlistitem(self.weather, 'icon')
+        return self.ICON_URL % (icon)
+    
+    def __repr__(self):
+        return 'City class: [id=%s, dt=%s, name=%s]' % (self.identifier, self.dt, self.name) 
 
 
 class Forecast(object):
     ''' This class represents the forecast in the city for the next 7 days'''
     
-    def __init__(self, identifier, city, url, forecast_list):
+    def __init__(self, identifier, city, url, forecastlist):
         self.identifier = identifier
         self.city = city
         self.url = url
-        self.forecast_list = forecast_list
+        self.forecastlist = forecastlist
         
-    def get_city_name(self):
+    def getcityname(self):
         ''' return the name of the city'''
-        return get_list_item(self.city, 'name')
+        return getlistitem(self.city, 'name')
     
-    def get_city_country(self):
+    def getcitycountry(self):
         ''' return the country of the city'''
-        return get_list_item(self.city, 'country')
+        return getlistitem(self.city, 'country')
     
-    def get_city_coord_as_tuple(self):
+    def getcitycoordastuple(self):
         ''' return the coordinates of the city as tuple'''
         coord = self.city['coord']
         return coord['lat'], coord['long']
     
-    def get_city_stations_count(self):
+    def getcitystationscount(self):
         ''' return the stations count of a city'''
-        return get_list_item(self.city, 'stations_count')
+        return getlistitem(self.city, 'stations_count')
     
-    def __str__(self):
+    def __repr__(self):
         return 'Forecast class: [id=%d, name=%s, country=%s]' % (self.id, self.city['name'], self.city['country']) 
 
 class ForecastItem(object):
     ''' This class represents a forecast item of the Forecast object'''
     
-    def __init__(self, clouds, snow, dt_txt, weather, main, wind): 
+    def __init__(self, clouds, snow, dttxt, weather, main, wind): 
         self.clouds = clouds
         self.snow = snow
-        self.dt_txt = dt_txt
+        self.dttxt = dttxt
         self.weather = weather
         self.main = main
         self.wind = wind
         
-    def get_clouds_high(self):
+    def getcloudshigh(self):
         ''' return the percentage of high clouds'''
-        return get_list_item(self.clouds, 'high')
+        return getlistitem(self.clouds, 'high')
     
-    def get_clouds_middle(self):
+    def getcloudsmiddle(self):
         ''' return the percentage of middle clouds'''
-        return get_list_item(self.clouds, 'middle')
+        return getlistitem(self.clouds, 'middle')
     
-    def get_clouds_low(self):
+    def getcloudslow(self):
         ''' return the percentage of low clouds'''
-        return get_list_item(self.clouds, 'low')
+        return getlistitem(self.clouds, 'low')
         
-    def get_clouds_all(self):
+    def getcloudsall(self):
         ''' return the percentage of all clouds'''
-        return get_list_item(self.clouds, 'all')
+        return getlistitem(self.clouds, 'all')
     
-    def get_weather_main(self):
+    def getweathermain(self):
         ''' return the weather main'''
-        return get_list_item(self.weather, 'main')
+        return getlistitem(self.weather, 'main')
     
-    def get_weather_id(self):
+    def getweatherid(self):
         ''' return the weather id'''
-        return get_list_item(self.weather, 'id')
+        return getlistitem(self.weather, 'id')
     
-    def get_weather_icon_url(self):
+    def getweathericonurl(self):
         ''' return the weather icon '''
-        icon = get_list_item(self.weather, 'icon')
-        return self.icon_url % (icon)
+        icon = getlistitem(self.weather, 'icon')
+        return self.ICON_URL % (icon)
     
-    def get_weather_description(self):
+    def getweatherdescription(self):
         ''' return the weather description'''
-        return get_list_item(self.weather, 'description')
+        return getlistitem(self.weather, 'description')
     
-    def get_main_temp(self):
+    def getmaintemp(self):
         ''' return the temperature'''
-        return get_list_item(self.main, 'temp')
+        return getlistitem(self.main, 'temp')
     
-    def get_main_temp_c(self):
+    def getmaintempc(self):
         ''' return the temperature in degree celsius'''
-        return self.get_main_temp() - Data.KELVIN_NULL
+        return self.getmaintemp() - Data.KELVIN_NULL
     
-    def get_main_temp_f(self):
+    def getmaintempf(self):
         ''' return the temperature in degree fahrenheit'''
-        return (self.get_temp_c() * 9) / 5 + 32
+        return (self.gettempc() * 9) / 5 + 32
     
-    def get_main_temp_min(self):
+    def getmaintempmin(self):
         ''' return the minimum temperature'''
-        return get_list_item(self.main, 'temp_min')
+        return getlistitem(self.main, 'temp_min')
     
-    def get_main_temp_min_c(self):
+    def getmaintempminc(self):
         ''' return the miniumum temperature in degree celsius'''
-        return self.get_main_temp_min() - Data.KELVIN_NULL
+        return self.getmaintempmin() - Data.KELVIN_NULL
     
-    def get_main_temp_min_f(self):
+    def getmaintempminf(self):
         ''' return the minimum temperature in degree fahrenheit'''
-        return (self.get_main_temp_min_c() * 9) / 5 + 32
+        return (self.getmaintempminc() * 9) / 5 + 32
     
-    def get_main_temp_max(self):
+    def getmaintempmax(self):
         ''' return the maximum temperature'''
-        return get_list_item(self.main, 'temp_max')
+        return getlistitem(self.main, 'temp_max')
     
-    def get_main_temp_max_c(self):
+    def getmaintempmaxc(self):
         ''' return the maximum temperature in degree celsisus'''
-        return self.get_main_temp_max() - Data.KELVIN_NULL
+        return self.getmaintempmax() - Data.KELVIN_NULL
     
-    def get_main_temp_max_f(self):
+    def getmaintempmaxf(self):
         ''' return the maximum temperature in degree fahrenheit'''
-        return (self.get_main_temp_max_c() * 9) / 5 + 32
+        return (self.getmaintempmaxc() * 9) / 5 + 32
     
-    def get_main_humidity(self):
+    def getmainhumidity(self):
         ''' return the humidity in percent'''
-        return get_list_item(self.main, 'humidity')
+        return getlistitem(self.main, 'humidity')
     
-    def get_main_pressure(self):
+    def getmainpressure(self):
         ''' return the pressure in hpa'''
-        return get_list_item(self.main, 'pressure')
+        return getlistitem(self.main, 'pressure')
     
-    def get_wind_gust(self):
+    def getwindgust(self):
         ''' return the speed of wind gust'''
-        return get_list_item(self.wind, 'gust')
+        return getlistitem(self.wind, 'gust')
     
-    def get_wind_speed(self):
+    def getwindspeed(self):
         ''' return the windspeed in mps'''
-        return get_list_item(self.wind, 'speed')
+        return getlistitem(self.wind, 'speed')
     
-    def get_wind_speed_km(self):
+    def getwindspeedkm(self):
         ''' return the windspeed in kms'''
-        return self.get_wind_speed() * Data.KM_MILES
+        return self.getwindspeed() * Data.KM_MILES
     
-    def get_wind_deg(self):
+    def getwinddeg(self):
         ''' return the wind degree'''
-        return get_list_item(self.wind, 'deg')
+        return getlistitem(self.wind, 'deg')
+    
+    def __repr__(self):
+        return 'ForecastItem class: [weather=%s, temp=%f, mintemp=%f, maxtemp=%f, windspeed=%f]' % (self.getweathermain(), self.getmaintempc(), self.getmaintempmaxc(), self.getwindspeedkm())
     
     
-class Forecast_compact(object):
+class Forecastcompact(object):
     ''' This class represents a compact weather infos for the next 7 days'''
     
-    def __init__(self, forecast_list):
-        self.forecast_list = forecast_list
+    def __init__(self, forecastlist):
+        self.forecastlist = forecastlist
     
 
-class ForecastItem_compact(object):
+class ForecastItemcompact(object):
+    
+    ICON_URL = 'http://openweathermap.org/img/w/%s.png'
+    
     ''' This class represents compact weather infos for a single day as part of the Compact_Forecast object'''
-    def __init__(self, dt, temp, temp_night, temp_eve, temp_morn, pressure, humidity, weather, wind_speed, wind_degree):
+    def __init__(self, dt, temp, tempnight, tempeve, tempmorn, pressure, humidity, weather, windspeed, winddegree):
         self.datetime = datetime
         self.temp = temp
-        self.temp_night = temp_night
-        self.temp_eve = temp_eve
-        self.temp_morn = temp_morn
+        self.tempnight = tempnight
+        self.tempeve = tempeve
+        self.tempmorn = tempmorn
         self.pressure = pressure
         self.humidity = humidity
         self.weather = weather
-        self.wind_speed = wind_speed
-        self.wind_degree = wind_degree
+        self.windspeed = windspeed
+        self.winddegree = winddegree
         
-    def get_temp_c(self):
+    def gettempc(self):
         ''' return the temperature in degree celsius'''
         return self.temp - Data.KELVIN_NULL
     
-    def get_temp_f(self):
+    def gettempf(self):
         ''' return the temperature in degree fahrenheit'''
-        return (self.temp_c() * 9) / 5 + 32
+        return (self.tempc() * 9) / 5 + 32
     
-    def get_temp_night_c(self):
+    def gettempnightc(self):
         ''' return the night temperature in degree celsius'''
-        return self.temp_night - Data.KELVIN_NULL
+        return self.tempnight - Data.KELVIN_NULL
     
-    def get_temp_night_f(self):
+    def gettempnightf(self):
         ''' return the night temperature in degree fahrenheit'''
-        return (self.temp_night_c()  * 9) / 5 + 32
+        return (self.tempnightc()  * 9) / 5 + 32
     
-    def get_temp_eve_c(self):
+    def gettempevec(self):
         ''' return the eve temperature in degree celsius'''
-        return self.temp_eve - Data.KELVIN_NULL
+        return self.tempeve - Data.KELVIN_NULL
     
-    def get_temp_eve_f(self):
+    def gettempevef(self):
         ''' return the eve temperature in degree fahrenheit'''
-        return (self.get_temp_eve_c() * 9) / 5 + 32
+        return (self.gettempevec() * 9) / 5 + 32
     
-    def get_temp_morn_c(self):
+    def gettempmornc(self):
         ''' return the morn temperature in degree celsius'''
-        return self.temp_morn - Data.KELVIN_NULL
+        return self.tempmorn - Data.KELVIN_NULL
     
-    def get_temp_morn_f(self):
+    def gettempmornf(self):
         ''' return the morn temperature in degree fahrenheit'''
-        return (self.get_temp_morn_c() * 9) / 5 + 32
+        return (self.gettempmornc() * 9) / 5 + 32
     
-    def get_pressure(self):
+    def getpressure(self):
         ''' return the pressure in hPa '''
         return self.pressure
     
-    def get_humidity(self):
+    def gethumidity(self):
         ''' return the humitiy in percent'''
         return self.humidity
     
-    def get_weather_main(self):
+    def getweathermain(self):
         ''' return the weather main'''
-        return get_list_item(self.weather, 'main')
+        return getlistitem(self.weather, 'main')
     
-    def get_weather_description(self):
+    def getweatherdescription(self):
         ''' return the weather description'''
-        return get_list_item(self.weather, 'description')
+        return getlistitem(self.weather, 'description')
     
-    def get_weather_icon_url(self):
+    def getweathericonurl(self):
         ''' return the url to the weather icon'''
-        icon = get_list_item(self.weather, 'icon')
-        return self.icon_url % (icon)
+        icon = getlistitem(self.weather, 'icon')
+        return self.ICON_URL % (icon)
     
-    def get_wind_speed(self):
+    def getwindspeed(self):
         ''' return the windspeed in mps'''
-        return self.cloud_speed
+        return self.cloudspeed
     
-    def get_wind_speed_km(self):
+    def getwindspeedkm(self):
         ''' return the windspeed in kms'''
-        return self.cloud_speed * Data.KM_MILES
+        return self.cloudspeed * Data.KM_MILES
     
-    def get_wind_deg(self):
+    def getwinddeg(self):
         ''' return the wind direction in degrees(meteorological)'''
-        return self.cloud_degree
+        return self.clouddegree
  
 
 
