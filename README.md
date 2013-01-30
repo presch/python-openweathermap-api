@@ -12,13 +12,13 @@ Usage
 --------------------------
 `> from pyowm import OpenWeatherMapApi`
 
-get the next 10 stations for a given latitude/longitude
-`> api = OpenWeatherMapApi()`
-`> stationlist = api.getstationbycoordinates(22.5, 16.3, 10)`
+get the next 10 stations for a given latitude/longitude  
+`> api = OpenWeatherMapApi()`  
+`> stationlist = api.getstationbycoordinates(22.5, 16.3, 10)`  
 
-`print the stations`
-`> for station in stationlist:`
-`>	print station`
+print the stations
+`> for station in stationlist:`  
+`>	print station`  
 
 Station class: [id=4812, dt=1359571800, name=BGQQ, type=1]  
 Station class: [id=4685, dt=1359568800, name=SABE, type=1]  
@@ -31,7 +31,7 @@ Station class: [id=6441, dt=1359571800, name=HLLT, type=1]
 Station class: [id=6438, dt=1359571800, name=HLLM, type=1]  
 Station class: [id=6320, dt=1359568800, name=DTTD, type=1]  
 
-print the temperature in degree celsius from the first station
-`> print stationlist[0].getmaintempc()`
+print the temperature in degree celsius from the first station  
+`> print stationlist[0].getmaintempc()`  
 -21.0
 
